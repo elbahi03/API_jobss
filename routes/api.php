@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\CandidaturesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,3 +40,10 @@ Route::post('/jobs', [JobsController::class, 'store']);
 Route::put('/jobs/{id}', [JobsController::class, 'update']);
 Route::delete('/jobs/{id}', [JobsController::class, 'destroy']);
 Route::get('/jobs/search', [JobsController::class, 'search']);
+// Candidatures routes :
+Route::post('/candidatures', [CandidaturesController::class, 'store']);
+Route::get('/candidatures/{id}', [CandidaturesController::class, 'show']);
+Route::get('/candidatures/user/{user_id}', [CandidaturesController::class, 'getByUser']);
+Route::get('/candidatures/job/{job_id}', [CandidaturesController::class, 'getByJob']);
+Route::put('/candidatures/{id}', [CandidaturesController::class, 'update']);
+Route::delete('/candidatures/{id}', [CandidaturesController::class, 'destroy']);
