@@ -22,8 +22,8 @@ class RoleController extends Controller
     }
 
     public function getAdmins(){
-        $admins = Role::where('role', 'admin')->get();
-        return response()->json($admins);
+        $admin = Role::where('role', 'admin')->get();
+        return response()->json($admin);
     }
 
     public function show($id){
@@ -34,25 +34,34 @@ class RoleController extends Controller
         return response()->json($role);
     }
 
+    public function store(Request $request){
+        $request->validate([
+            'role' => 'required|in:user,emp,admin',
+            'user_id' => 'required|exists:users,id',
+        ]);
+        $role = Role::create($request->only(['role', 'user_id']));
+        return response()->json(['message' => 'Role created', 'data' => $role], 201);
+    }
+
     public function update(Request $request, $id){
         $role = Role::find($id);
         if (!$role) {
-            return response()->json(['message' => 'Role not found'], 404);
+            return response()->json(['message' => 'not found 404'], 404);
         }
         $request->validate([
             'role' => 'in:user,emp,admin',
             'user_id' => 'exists:users,id'
         ]);
         $role->update($request->only(['role', 'user_id']));
-        return response()->json(['message' => 'Role updated successfully', 'data' => $role]);
+        return response()->json(['message' => 'Role updated', 'data' => $role]);
     }
 
     public function destroy($id){
         $role = Role::find($id);
         if (!$role) {
-            return response()->json(['message' => 'Role not found'], 404);
+            return response()->json(['message' => 'not found 404'], 404);
         }
         $role->delete();
-        return response()->json(['message' => 'Role deleted successfully']);
+        return response()->json(['message' => 'Role deleted']);
     }
 }
