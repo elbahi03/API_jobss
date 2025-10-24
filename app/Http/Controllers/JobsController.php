@@ -21,6 +21,11 @@ class JobsController extends Controller{
     }
 
     public function store(Request $request){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
@@ -33,6 +38,11 @@ class JobsController extends Controller{
     }
 
     public function update(Request $request, $id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $job = Jobs::find($id);
         if (!$job) {
             return response()->json(['message' => 'Offre non trouvée'], 404);
@@ -49,6 +59,11 @@ class JobsController extends Controller{
     }
 
     public function destroy($id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $job = Jobs::find($id);
         if (!$job) {
             return response()->json(['message' => 'Job not found'], 404);

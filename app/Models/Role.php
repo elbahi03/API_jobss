@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
-    protected $fillable = [ 'user_id', 'role' ];
+    protected $fillable = [ 'role' ];
 
     public function user(){
        return $this->belongsTo(User::class);
     }
 
     public function role(){
-        return $this->hasOne(Role::class);
+        return $this->hasMany(Role::class);
     }
 }

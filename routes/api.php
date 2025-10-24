@@ -18,7 +18,12 @@ use App\Http\Controllers\CandidaturesController;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user=$request->user();
+    $role= $user->role->role;
+    return response()->json([
+        'user' => $user , 
+        'role' => $role
+    ],200);
 });
 // Auth route :
 Route::post('/register', [AuthController::class, 'register']);
@@ -30,25 +35,25 @@ Route::get('/users/{id}', [AuthController::class, 'show']);
 Route::put('/users/{id}', [AuthController::class, 'update']);
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 // Role routes :
-Route::get('/roles', [RoleController::class, 'index']);
-Route::get('/roles-users', [RoleController::class, 'getUsers']);
-Route::get('/roles-emps', [RoleController::class, 'getEmps']);
-Route::get('/roles-admins', [RoleController::class, 'getAdmins']);
-Route::get('/roles/{id}', [RoleController::class, 'show']);
-Route::post('/roles', [RoleController::class, 'store']);
-Route::put('/roles/{id}', [RoleController::class, 'update']);
-Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+Route::get('/roles', [RoleController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/roles-users', [RoleController::class, 'getUsers'])->middleware('auth:sanctum');
+Route::get('/roles-admins', [RoleController::class, 'getAdmins'])->middleware('auth:sanctum');
+Route::get('/roles-emps', [RoleController::class, 'getEmps'])->middleware('auth:sanctum');
+Route::get('/roles/{id}', [RoleController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/roles', [RoleController::class, 'store'])->middleware('auth:sanctum');
+Route::put('/roles/{id}', [RoleController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/roles/{id}', [RoleController::class, 'destroy'])->middleware('auth:sanctum');
 // Jobs routes :
-Route::get('/jobs', [JobsController::class, 'index']);
-Route::get('/jobs/{id}', [JobsController::class, 'show']);
-Route::post('/jobs', [JobsController::class, 'store']);
-Route::put('/jobs/{id}', [JobsController::class, 'update']);
-Route::delete('/jobs/{id}', [JobsController::class, 'destroy']);
-Route::get('/jobs-search', [JobsController::class, 'search']);
+Route::get('/jobs', [JobsController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/jobs/{id}', [JobsController::class, 'show'])->middleware('auth:sanctum');
+Route::post('/jobs', [JobsController::class, 'store'])->middleware(['auth:sanctum']);
+Route::put('/jobs/{id}', [JobsController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/jobs/{id}', [JobsController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/jobs-search', [JobsController::class, 'search'])->middleware('auth:sanctum');
 // Candidatures routes :
-Route::post('/candidatures', [CandidaturesController::class, 'store']);
-Route::get('/candidatures/{id}', [CandidaturesController::class, 'show']);
-Route::get('/candidatures/user/{user_id}', [CandidaturesController::class, 'getByUser']);
-Route::get('/candidatures/job/{job_id}', [CandidaturesController::class, 'getByJob']);
-Route::put('/candidatures/{id}', [CandidaturesController::class, 'update']);
-Route::delete('/candidatures/{id}', [CandidaturesController::class, 'destroy']);
+Route::post('/candidatures', [CandidaturesController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/candidatures/{id}', [CandidaturesController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/candidatures/user/{user_id}', [CandidaturesController::class, 'getByUser'])->middleware('auth:sanctum');
+Route::get('/candidatures/job/{job_id}', [CandidaturesController::class, 'getByJob'])->middleware('auth:sanctum');
+Route::put('/candidatures/{id}', [CandidaturesController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('/candidatures/{id}', [CandidaturesController::class, 'destroy'])->middleware('auth:sanctum');

@@ -21,6 +21,11 @@ class CandidaturesController extends Controller{
     }
 
     public function show($id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $candidature = Candidatures::find($id);
         if(!$candidature) {
             return response()->json(['message' => 'Candidature non trouvée'], 404);
@@ -37,6 +42,11 @@ class CandidaturesController extends Controller{
     }
 
     public function getByJob($job_id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
     $candidatures = Candidatures::where('job_id', $job_id)->get();
     if ($candidatures->isEmpty()) {
         return response()->json(['message' => 'Aucune candidature trouvée'], 404);
@@ -45,6 +55,11 @@ class CandidaturesController extends Controller{
     }
 
     public function update(Request $request, $id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $candidature = Candidatures::find($id);
         if (!$candidature){
             return response()->json(['message' => 'Candidature non trouvée'], 404);
@@ -54,6 +69,11 @@ class CandidaturesController extends Controller{
     }
 
     public function destroy($id){
+        $user = $request->user();
+        $role = $user->role->role; 
+        if ($role != 'admin' &&  $role != 'emp') {
+            return response()->json(['message' => 'not exiscte'],403);
+        }
         $candidature = Candidatures::find($id);
         if (!$candidature) {
             return response()->json(['message' => 'Candidature non trouvée'], 404);
