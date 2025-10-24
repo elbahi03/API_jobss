@@ -31,7 +31,7 @@ class CandidaturesController extends Controller{
     public function getByUser($user_id){
     $candidatures = Candidature::where('user_id', $user_id)->get();
     if ($candidatures->isEmpty()) {
-        return response()->json(['message' => 'Aucune candidature trouvée pour cet utilisateur'], 404);
+        return response()->json(['message' => 'Aucune candidature trouvée'], 404);
     }
     return response()->json($candidatures);
     }
@@ -39,7 +39,7 @@ class CandidaturesController extends Controller{
     public function getByJob($job_id){
     $candidatures = Candidature::where('job_id', $job_id)->get();
     if ($candidatures->isEmpty()) {
-        return response()->json(['message' => 'Aucune candidature trouvée pour cette offre'], 404);
+        return response()->json(['message' => 'Aucune candidature trouvée'], 404);
     }
     return response()->json($candidatures);
     }
@@ -59,6 +59,6 @@ class CandidaturesController extends Controller{
             return response()->json(['message' => 'Candidature non trouvée'], 404);
         }
         $candidature->delete();
-        return response()->json(['message' => 'Candidature supprimée avec succès']);
+        return response()->json(['message' => 'Candidature supprimée']);
     }
 }
