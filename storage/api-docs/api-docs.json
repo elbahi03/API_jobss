@@ -1,0 +1,2215 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Job Portal API Documentation",
+        "description": "API for managing Job Offers",
+        "contact": {
+            "email": "support@musicbox.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Job Portal API Server"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion d’un utilisateur",
+                "description": "Permet à un utilisateur existant de se connecter et d’obtenir un token d’accès.",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yassine@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Connexion réussie.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Identifiants invalides."
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Créer un nouveau compte utilisateur",
+                "description": "Permet à un utilisateur de s'inscrire en fournissant son nom, email, mot de passe et rôle.",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "role_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Yassine Elbahi"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "yassine@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Utilisateur créé avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Déconnexion de l’utilisateur",
+                "description": "Supprime le token d’accès courant de l’utilisateur connecté.",
+                "operationId": "d63629148bb395321afa6b014143b4c5",
+                "responses": {
+                    "200": {
+                        "description": "Déconnexion réussie.",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Liste de tous les utilisateurs",
+                "description": "Récupère la liste complète des utilisateurs.",
+                "operationId": "ce757d6a9dd9f3bf15fabb6611112518",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Utilisateur A"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email",
+                                                "example": "user.a@test.com"
+                                            },
+                                            "role_id": {
+                                                "type": "integer",
+                                                "example": 2
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Afficher un utilisateur spécifique",
+                "description": "Récupère les détails d'un utilisateur par son ID.",
+                "operationId": "b3d27f655646f5454083980a35a6b4f5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur à afficher.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'utilisateur récupérés avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Yassine Elbahi"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "yassine@gmail.com"
+                                        },
+                                        "role_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Mettre à jour un utilisateur",
+                "description": "Met à jour les informations d'un utilisateur par son ID. Seuls les champs fournis sont mis à jour.",
+                "operationId": "cc4fdc7b6760cba4a5834742ad7b4426",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur à mettre à jour.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Nouveau Nom"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "nouveau.email@test.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nouveau_motdepasse"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur mis à jour avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Utilisateur mis à jour"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Yassine Elbahi"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "yassine@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Utilisateurs"
+                ],
+                "summary": "Supprimer un utilisateur",
+                "description": "Supprime un utilisateur par son ID.",
+                "operationId": "8d623c822968776003e4d1009d1321b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur à supprimer.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur supprimé avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Utilisateur supprimé"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur non trouvé."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/candidatures": {
+            "post": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Soumettre une nouvelle candidature",
+                "description": "Enregistre une nouvelle candidature pour une offre d'emploi spécifique.",
+                "operationId": "62704344c7a43c99304e8d0a1c5e956e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "job_id",
+                                    "full_name",
+                                    "can_email",
+                                    "phone_number"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "ID de l'utilisateur qui postule.",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "job_id": {
+                                        "description": "ID de l'offre d'emploi concernée.",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Jean Dupont"
+                                    },
+                                    "can_email": {
+                                        "description": "Email du candidat (champ `can_email` dans la requête).",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jean.dupont@candidat.com"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "0612345678"
+                                    },
+                                    "motivation": {
+                                        "type": "string",
+                                        "example": "Je suis très intéressé par ce poste.",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Candidature créée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "job_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Jean Dupont"
+                                        },
+                                        "can_email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "jean.dupont@candidat.com"
+                                        },
+                                        "phone_number": {
+                                            "type": "string",
+                                            "example": "0612345678"
+                                        },
+                                        "motivation": {
+                                            "type": "string",
+                                            "example": "Je suis très intéressé par ce poste.",
+                                            "nullable": true
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 10
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/candidatures/{id}": {
+            "get": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Afficher les détails d'une candidature",
+                "description": "Récupère les détails d'une candidature spécifique par son ID. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "b4424ba45630d3949a32547388c529b1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la candidature à afficher.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de la candidature récupérés avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "job_id": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Jean Dupont"
+                                        },
+                                        "can_email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "jean.dupont@candidat.com"
+                                        },
+                                        "phone_number": {
+                                            "type": "string",
+                                            "example": "0612345678"
+                                        },
+                                        "motivation": {
+                                            "type": "string",
+                                            "example": "Je suis très intéressé par ce poste.",
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Candidature non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Candidature non trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Mettre à jour le statut ou les informations d'une candidature",
+                "description": "Met à jour les détails d'une candidature par son ID. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "048e7854d052736e6a721b6301427f5d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la candidature à mettre à jour.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Seuls les champs fournis seront mis à jour. (Ex: mettre à jour le statut.)",
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Jean Dupont MODIFIE",
+                                        "nullable": true
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "0799887766",
+                                        "nullable": true
+                                    },
+                                    "status": {
+                                        "description": "Exemple d'un champ de statut qui pourrait être mis à jour.",
+                                        "type": "string",
+                                        "enum": [
+                                            "en attente",
+                                            "acceptée",
+                                            "rejetée"
+                                        ],
+                                        "example": "en attente",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Candidature mise à jour avec succès. Retourne l'objet mis à jour.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "job_id": {
+                                            "type": "integer",
+                                            "example": 5
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Jean Dupont MODIFIE"
+                                        },
+                                        "can_email": {
+                                            "type": "string",
+                                            "format": "email",
+                                            "example": "jean.dupont@candidat.com"
+                                        },
+                                        "phone_number": {
+                                            "type": "string",
+                                            "example": "0799887766"
+                                        },
+                                        "motivation": {
+                                            "type": "string",
+                                            "example": "Motivation pour le poste.",
+                                            "nullable": true
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Candidature non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Candidature non trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Supprimer une candidature",
+                "description": "Supprime définitivement une candidature par son ID. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "2eed460642eada7d704c958dabac6ddd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de la candidature à supprimer.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Candidature supprimée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Candidature supprimée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Candidature non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Candidature non trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/candidatures/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Liste des candidatures par utilisateur",
+                "description": "Récupère toutes les candidatures soumises par un utilisateur spécifique (ID). L'accès doit être restreint à l'utilisateur lui-même ou à un admin/employeur (Logique d'autorisation supposée).",
+                "operationId": "77c12fcbf9df5ec1bd23701103ba12d9",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID de l'utilisateur dont on veut récupérer les candidatures.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidatures récupérées avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "job_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "full_name": {
+                                                "type": "string",
+                                                "example": "Jean Dupont"
+                                            },
+                                            "can_email": {
+                                                "type": "string",
+                                                "format": "email",
+                                                "example": "jean.dupont@candidat.com"
+                                            },
+                                            "phone_number": {
+                                                "type": "string",
+                                                "example": "0612345678"
+                                            },
+                                            "motivation": {
+                                                "type": "string",
+                                                "example": "Motivation pour le poste.",
+                                                "nullable": true
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune candidature trouvée pour cet utilisateur.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Aucune candidature trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/candidatures/job/{job_id}": {
+            "get": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Liste des candidatures par offre d'emploi",
+                "description": "Récupère toutes les candidatures soumises pour une offre d'emploi spécifique (ID). L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "a3f96e8c40e833db058f906feb80117c",
+                "parameters": [
+                    {
+                        "name": "job_id",
+                        "in": "path",
+                        "description": "ID de l'offre d'emploi pour laquelle on veut récupérer les candidatures.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidatures récupérées avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 10
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "job_id": {
+                                                "type": "integer",
+                                                "example": 5
+                                            },
+                                            "full_name": {
+                                                "type": "string",
+                                                "example": "Jean Dupont"
+                                            },
+                                            "can_email": {
+                                                "type": "string",
+                                                "format": "email",
+                                                "example": "jean.dupont@candidat.com"
+                                            },
+                                            "phone_number": {
+                                                "type": "string",
+                                                "example": "0612345678"
+                                            },
+                                            "motivation": {
+                                                "type": "string",
+                                                "example": "Motivation pour le poste.",
+                                                "nullable": true
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Aucune candidature trouvée pour cette offre d'emploi.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Aucune candidature trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/jobs": {
+            "get": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Liste de toutes les offres d'emploi",
+                "description": "Récupère la liste complète de toutes les offres d'emploi disponibles.",
+                "operationId": "6b307032ccc7685af33c78dee9152c22",
+                "responses": {
+                    "200": {
+                        "description": "Liste des offres d'emploi récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Développeur Full Stack (Laravel/Vue)"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Création et maintenance de nos applications web."
+                                            },
+                                            "salary": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 55000
+                                            },
+                                            "location": {
+                                                "type": "string",
+                                                "example": "Paris, France"
+                                            },
+                                            "status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "Ouvert",
+                                                    "Fermé",
+                                                    "En attente"
+                                                ],
+                                                "example": "Ouvert"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Créer une nouvelle offre d'emploi",
+                "description": "Enregistre une nouvelle offre d'emploi. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "7ec8a93a554353d753e8c5e3a610e3c8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "entreprise",
+                                    "ville",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Développeur Back-end Senior"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Responsable de l'architecture API et des bases de données."
+                                    },
+                                    "entreprise": {
+                                        "type": "string",
+                                        "example": "Tech Innov S.A."
+                                    },
+                                    "ville": {
+                                        "type": "string",
+                                        "example": "Casablanca"
+                                    },
+                                    "user_id": {
+                                        "description": "ID de l'utilisateur (employeur/admin) créant l'offre.",
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Offre d'emploi créée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Job created"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Développeur Back-end Senior"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Responsable de l'architecture API et des bases de données."
+                                                },
+                                                "entreprise": {
+                                                    "type": "string",
+                                                    "example": "Tech Innov S.A."
+                                                },
+                                                "ville": {
+                                                    "type": "string",
+                                                    "example": "Casablanca"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/jobs/{id}": {
+            "get": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Afficher les détails d'une offre d'emploi",
+                "description": "Récupère les détails d'une offre d'emploi spécifique par son ID.",
+                "operationId": "d51e167b46bab51d7b7fc3226f992cae",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'offre d'emploi à afficher.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails de l'offre d'emploi récupérés avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Développeur Full Stack (Laravel/Vue)"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Création et maintenance de nos applications web."
+                                        },
+                                        "salary": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 55000
+                                        },
+                                        "location": {
+                                            "type": "string",
+                                            "example": "Paris, France"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "Ouvert",
+                                                "Fermé",
+                                                "En attente"
+                                            ],
+                                            "example": "Ouvert"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offre d'emploi non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Job not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Mettre à jour une offre d'emploi",
+                "description": "Met à jour les informations d'une offre d'emploi par son ID. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "892989ba95b039d0eae5735926c92ad0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'offre d'emploi à mettre à jour.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Seuls les champs fournis dans le corps seront mis à jour.",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Développeur Full Stack (Mise à jour)",
+                                        "nullable": true
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Nouveau texte de description du poste.",
+                                        "nullable": true
+                                    },
+                                    "entreprise": {
+                                        "type": "string",
+                                        "example": "Tech Innov S.A. (Modifié)",
+                                        "nullable": true
+                                    },
+                                    "ville": {
+                                        "type": "string",
+                                        "example": "Rabat",
+                                        "nullable": true
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 2,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Mise à jour réussie. Retourne l'objet Job mis à jour.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "mise à jour réussie"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Développeur Full Stack (Mise à jour)"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Nouveau texte de description du poste."
+                                                },
+                                                "entreprise": {
+                                                    "type": "string",
+                                                    "example": "Tech Innov S.A. (Modifié)"
+                                                },
+                                                "ville": {
+                                                    "type": "string",
+                                                    "example": "Rabat"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offre non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offre non trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Supprimer une offre d'emploi",
+                "description": "Supprime définitivement une offre d'emploi par son ID. L'accès est limité aux rôles 'admin' et 'emp'.",
+                "operationId": "12da37f33e3cb226b005d5d7852e43d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID de l'offre d'emploi à supprimer.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Offre d'emploi supprimée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Job deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Interdit (Non autorisé).",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not exiscte"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offre d'emploi non trouvée.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Job not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/jobs/search": {
+            "get": {
+                "tags": [
+                    "Offres d'emploi"
+                ],
+                "summary": "Rechercher des offres d'emploi",
+                "description": "Permet de rechercher des offres d'emploi en utilisant des critères optionnels (titre, entreprise, ville).",
+                "operationId": "4256b2e2755d716a244e334806e03d60",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Recherche partielle par titre de l'offre d'emploi.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Développeur"
+                        }
+                    },
+                    {
+                        "name": "entreprise",
+                        "in": "query",
+                        "description": "Recherche partielle par nom d'entreprise.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Tech Innov"
+                        }
+                    },
+                    {
+                        "name": "ville",
+                        "in": "query",
+                        "description": "Recherche partielle par ville.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Casablanca"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Liste des offres d'emploi correspondant aux critères de recherche.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Développeur Full Stack"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Description de l'offre."
+                                            },
+                                            "entreprise": {
+                                                "type": "string",
+                                                "example": "Tech Innov S.A."
+                                            },
+                                            "ville": {
+                                                "type": "string",
+                                                "example": "Casablanca"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Liste de tous les rôles utilisateurs",
+                "description": "Récupère la liste complète des rôles disponibles dans l'application.",
+                "operationId": "77e3636d8592997ce9d6d27b50857a69",
+                "responses": {
+                    "200": {
+                        "description": "Liste des rôles récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "role": {
+                                                "description": "Nom du rôle (ex: admin, emp, user).",
+                                                "type": "string",
+                                                "example": "admin"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Créer un nouveau rôle",
+                "description": "Crée un nouveau rôle utilisateur, en s'assurant que le nom du rôle est valide.",
+                "operationId": "4a563842fbfcad237f63da43065fca3d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "role"
+                                ],
+                                "properties": {
+                                    "role": {
+                                        "description": "Le nom du rôle à assigner.",
+                                        "type": "string",
+                                        "enum": [
+                                            "user",
+                                            "emp",
+                                            "admin"
+                                        ],
+                                        "example": "user"
+                                    },
+                                    "user_id": {
+                                        "description": "ID de l'utilisateur concerné (si non géré par un autre endpoint).",
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rôle créé avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role created"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "user"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données (rôle invalide)."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/roles/users": {
+            "get": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Liste des utilisateurs simples",
+                "description": "Récupère la liste de tous les utilisateurs ayant spécifiquement le rôle 'user'.",
+                "operationId": "31d6e602b4214fc4caf7450775dd9bfb",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs de rôle 'user' récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 3
+                                            },
+                                            "role": {
+                                                "description": "Nom du rôle.",
+                                                "type": "string",
+                                                "example": "user"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/roles/employers": {
+            "get": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Liste des utilisateurs employeurs/entreprises",
+                "description": "Récupère la liste de tous les utilisateurs ayant spécifiquement le rôle 'emp'.",
+                "operationId": "7177109abb744a7a4f3289e31190e4fa",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs de rôle 'emp' récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "role": {
+                                                "description": "Nom du rôle.",
+                                                "type": "string",
+                                                "example": "emp"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/roles/admins": {
+            "get": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Liste des administrateurs",
+                "description": "Récupère la liste de tous les utilisateurs ayant spécifiquement le rôle 'admin'.",
+                "operationId": "77b10ccca37d46770dcb8dba58792926",
+                "responses": {
+                    "200": {
+                        "description": "Liste des utilisateurs de rôle 'admin' récupérée avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "role": {
+                                                "description": "Nom du rôle.",
+                                                "type": "string",
+                                                "example": "admin"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "nullable": true
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Afficher un rôle spécifique",
+                "description": "Récupère les détails d'un rôle utilisateur par son ID.",
+                "operationId": "7fb0667a295b7678a30353aa11739683",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du rôle à afficher.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Détails du rôle récupérés avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "role": {
+                                            "description": "Nom du rôle (ex: admin, emp, user).",
+                                            "type": "string",
+                                            "example": "admin"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "nullable": true
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Mettre à jour un rôle",
+                "description": "Met à jour le nom du rôle ou l'utilisateur associé par l'ID du rôle. Seuls les champs fournis sont mis à jour.",
+                "operationId": "786d6990093a8eb3a56931f19a827e43",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du rôle à mettre à jour.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "description": "Champs à mettre à jour. Au moins un champ est requis.",
+                                "properties": {
+                                    "role": {
+                                        "description": "Le nouveau nom du rôle.",
+                                        "type": "string",
+                                        "enum": [
+                                            "user",
+                                            "emp",
+                                            "admin"
+                                        ],
+                                        "example": "emp",
+                                        "nullable": true
+                                    },
+                                    "user_id": {
+                                        "description": "Le nouvel ID de l'utilisateur concerné.",
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rôle mis à jour avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role updated"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "emp"
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not found 404"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erreur de validation des données (rôle ou user_id invalide)."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Rôles"
+                ],
+                "summary": "Supprimer un rôle",
+                "description": "Supprime définitivement un rôle utilisateur par son ID.",
+                "operationId": "8285c46981c60ad600aa4077307aec04",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID du rôle à supprimer.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 4
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rôle supprimé avec succès.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role deleted"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rôle non trouvé.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "not found 404"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "Bearer Token Authentication",
+                "in": "header",
+                "bearerFormat": "Sanctum Token",
+                "scheme": "Bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentification",
+            "description": "Authentification"
+        },
+        {
+            "name": "Utilisateurs",
+            "description": "Utilisateurs"
+        },
+        {
+            "name": "Candidatures",
+            "description": "Candidatures"
+        },
+        {
+            "name": "Offres d'emploi",
+            "description": "Offres d'emploi"
+        },
+        {
+            "name": "Rôles",
+            "description": "Rôles"
+        }
+    ]
+}
